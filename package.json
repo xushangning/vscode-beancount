@@ -96,8 +96,37 @@
       {
         "command": "beancount.runFava",
         "title": "Run Fava"
+      },
+      {
+        "command": "beancount.openJournalPreview",
+        "title": "Beancount: Open Journal Preview",
+        "icon": "$(open-preview)"
       }
     ],
+    "customEditors": [
+      {
+        "viewType": "beancount.journalPreview",
+        "displayName": "Journal Preview",
+        "selector": [
+          {
+            "filenamePattern": "*.beancount"
+          },
+          {
+            "filenamePattern": "*.bean"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "beancount.openJournalPreview",
+          "when": "resourceLangId == beancount",
+          "group": "navigation"
+        }
+      ]
+    },
     "languages": [
       {
         "id": "beancount",

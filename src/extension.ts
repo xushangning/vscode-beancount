@@ -9,6 +9,7 @@ import { runCmd } from "./utils";
 import { SymbolProvider } from "./symbolProvider";
 import DocumentLinkProvider from "./documentLinkProvider";
 import { HintsUpdater } from "./inlayHints";
+import { JournalPreviewProvider } from "./journalPreview";
 
 export function activate(context: vscode.ExtensionContext) {
   const extension = new Extension(context);
@@ -16,6 +17,32 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.commands.registerCommand("beancount.runFava", () =>
     extension.favaManager.openFava(true)
+  );
+
+  // Register Journal preview custom editor
+  context.subscriptions.push(
+    JournalPreviewProvider.register(context)
+  );
+
+  // Register command to open journal preview
+  context.subscriptions.push(
+    vscode.commands.registerCommand("beancount.openJournalPreview", async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showErrorMessage("No active editor");
+        return;
+      }
+      if (editor.document.languageId !== "beancount") {
+        vscode.window.showErrorMessage("Current file is not a Beancount file");
+        return;
+      }
+      await vscode.commands.executeCommand(
+        "vscode.openWith",
+        editor.document.uri,
+        "beancount.journalPreview",
+        vscode.ViewColumn.Beside
+      );
+    })
   );
 
   context.subscriptions.push(

@@ -6,8 +6,25 @@
 		{
 			"type": "npm",
 			"script": "watch",
-			"problemMatcher": "$ts-webpack-watch",
 			"isBackground": true,
+			"problemMatcher": {
+				"owner": "typescript",
+				"fileLocation": "relative",
+				"pattern": {
+					"regexp": "^(.+)\\((\\d+),(\\d+)\\):\\s+(error|warning)\\s+TS(\\d+):\\s+(.+)$",
+					"file": 1,
+					"line": 2,
+					"column": 3,
+					"severity": 4,
+					"code": 5,
+					"message": 6
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "\\[webpack-cli\\] Compiler starting",
+					"endsPattern": "webpack \\d+\\.\\d+\\.\\d+ compiled"
+				}
+			},
 			"presentation": {
 				"reveal": "never",
 				"group": "watchers"
